@@ -26,8 +26,8 @@ class Controller {
 
         if(gettype($view) === "string") {
             require_once $this->getView($view);             
-        } else if(gettype($view) === "object" || gettype($view) === "array") {
-            header("Content-Type:application/json");
+        } else if(gettype($view) === "object" || gettype($view) === "array") { // $view 에 객체나 배열이 저장되면
+            header("Content-Type:application/json"); // JSON(배열,객체를 보여주는 화면)으로 넘어간다.
             echo json_encode($view);
         }        
     }
