@@ -10,6 +10,7 @@ html { position: relative; min-height: 100%; scroll-behavior: smooth; }
 ol, ul { list-style: none; }
 table { border-collapse: collapse; border-spacing: 0; }
 
+.err {color:red;}
 .back_color { background-color: #fafafa; }
 .bold { font-weight: bold; }
 .circleimg { display: inline-block; overflow: hidden; border-radius: 50%; border: 1px solid #ecf0f1; }
