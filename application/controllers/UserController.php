@@ -9,13 +9,18 @@ class UserController extends Controller {
                 return "user/signin.php";
             case _POST : 
                 $email = $_POST["email"];
-                $param = ["email" => $email, "pw" => $_POST["pw"]];
+                $pw = $_POST["pw"];
+                $param = ["email" => $email, "pw" => $pw ];
                 $dbUser = $this-> model-> selUser($param);
 
-            if(!$dbUser || !password_verify($param["pw"], $dbUSer->pw)) {
+            if(!$dbUser || !password_verify($pw, $dbUSer->pw)) {
                 return "redirect:signin?email={$email}&err";
-            } 
-                return "redirect:/feed/index";
+            }
+
+            $dbUser->pw = null; // 비밀번호 유출을 막기 위해 null값을 세션에 넣는다.
+            $dbUser->regdt = null; // created_at ...메모리 사용을 줄이기 위해 필요없는 부분은 삭제
+            $this->flash(_LOGINUSER, $dbUser); 
+            return "redirect:/feed/index";
         }
     }
 
