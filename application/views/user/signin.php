@@ -9,6 +9,7 @@
                 if(isset($_GET["err"])) {
                     echo "로그인을 할 수 없습니다.";
                 }
+                
             ?>
         </div>
         <form action="signin" method="post"> <!--getParam : UrlUtils 에서 만든 메소드, 겟방식으로 받아온 값이 있으면 value에 값을 남긴다.-->
