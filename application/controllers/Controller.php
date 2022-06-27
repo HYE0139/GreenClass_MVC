@@ -48,11 +48,11 @@ class Controller {
     }
 
     protected function flash($name = '', $val = '') {
-        if(!empty($name)) { //공백이 아니면
-            if(!empty($val)) {
-                $_SESSION[$name] = $val;
+        if(!empty($name)) { //$name 값을 받아오고
+            if(!empty($val)) { //$val 값도 받아왔다면!
+                $_SESSION[$name] = $val; // 세션이 만들어진다.
             } else if(empty($val) && !empty($_SESSION[$name])) {
-                unset($_SESSION[$name]);
+                unset($_SESSION[$name]); // 받아온 값이 다 없다면 세션이 내려감
             }
         }
     }
