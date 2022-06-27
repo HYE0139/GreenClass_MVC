@@ -11,7 +11,7 @@
                 }
             ?>
         </div>
-        <form action="signin" method="post">
+        <form action="signin" method="post"> <!--getParam : UrlUtils 에서 만든 메소드, 겟방식으로 받아온 값이 있으면 value에 값을 남긴다.-->
             <div><input type="email" name="email" placeholder="email" value="<?=getParam('email')?>" autofocus required></div>
             <div><input type="password" name="pw" placeholder="password" required></div>
             <div>
