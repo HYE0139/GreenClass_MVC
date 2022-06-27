@@ -3,7 +3,7 @@ namespace application\controllers;
 
 class Controller {    
     protected $model;
-    private static $needLoginUrlArr = [];
+    private static $needLoginUrlArr = ["feed"];
 
     public function __construct($action, $model) {    
         if(!isset($_SESSION)) {
@@ -12,8 +12,9 @@ class Controller {
         $urlPaths = getUrl();
         foreach(static::$needLoginUrlArr as $url) {
             if(strpos( $urlPaths, $url) === 0 && !isset($_SESSION[_LOGINUSER]) ) {
-                echo "권한이 없습니다.";
-                exit();
+                //echo "권한이 없습니다.";
+                //exit();
+                $this->getView("redirect:/user/signin");
             }
         }
 
@@ -39,7 +40,7 @@ class Controller {
         $this->$key = $val;
     }
 
-    protected function getView($view) {
+    protected function getView($view) {//주소
         if(strpos($view, "redirect:") === 0) {
             header("Location: " . substr($view, 9));
             exit();
