@@ -3,6 +3,7 @@ namespace application\libs;
 
 require_once "application/utils/UrlUtils.php";
 require_once "application/utils/SessionUtils.php";
+require_once "application/utils/FileUtils.php";
 
 class Application{
     
@@ -11,7 +12,7 @@ class Application{
     private static $modelList = [];
 
     public function __construct() {        
-        $urlPaths = getUrlPaths();
+        $urlPaths = getUrlPaths();//url 주소값들을 배열로 저장한 함수
         $controller = isset($urlPaths[0]) && $urlPaths[0] != '' ? $urlPaths[0] : 'board';
         $action = isset($urlPaths[1]) && $urlPaths[1] != '' ? $urlPaths[1] : 'index';
 
