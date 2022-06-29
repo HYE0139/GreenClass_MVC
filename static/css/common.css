@@ -21,6 +21,8 @@ table { border-collapse: collapse; border-spacing: 0; }
 .container-center { display: flex; justify-content: center; align-items: center; }
 .h24 { height: 24px; }
 .h30 { height: 30px; }
+.h40 { height: 40px; }
+.h100 { height: 100px; }
 .h300 { height: 300px; }
 .h600 { height: 600px; }
 .h-full { height: 100%; }
@@ -36,6 +38,7 @@ table { border-collapse: collapse; border-spacing: 0; }
 
 .w24 { width: 24px; }
 .w30 { width: 30px; }
+.w40 { width: 40px; }
 .w100 { width: 100px; }
 .w250 { width: 250px; }
 .w300 { width: 300px; }
@@ -48,4 +51,10 @@ table { border-collapse: collapse; border-spacing: 0; }
 .modal_close { color: white; font-size: 50px; cursor: pointer; }
 .profile { object-fit: cover; border-radius: 50%; }
 
+.profile_img { margin:50px auto;}
+.profile_set {padding: 7px 15px;}
+.profile_set label { display:block; font-size: 0.7rem;}
+.profile_set input {border:none; border-bottom: 0.7px solid rgb(87, 87, 87);}
 .scroll_smooth { scroll-behavior: smooth; }
+
+.fc-g { font-size: 0.8rem; color: #8e8e8e;}
