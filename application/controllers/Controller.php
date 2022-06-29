@@ -3,24 +3,24 @@ namespace application\controllers;
 
 class Controller {    
     protected $model;
-    private static $needLoginUrlArr = ["feed"];
+    private static $needLoginUrlArr = ["feed"]; //주소값 feed에 접근하려면 로그인이 필요
 
     public function __construct($action, $model) {    
         if(!isset($_SESSION)) {
             session_start();
         }    
-        $urlPaths = getUrl();
+        $urlPaths = getUrl(); // UrlUtils
         foreach(static::$needLoginUrlArr as $url) {
             if(strpos( $urlPaths, $url) === 0 && !isset($_SESSION[_LOGINUSER]) ) {
                 //echo "권한이 없습니다.";
-                //exit();
+                //exit(); 주소로 접근하려고 하면 signin 페이지로 대신 이동함
                 $this->getView("redirect:/user/signin");
             }
         }
 
         $this->model = $model;
-        $view = $this->$action();
-        if(empty($view)) {
+        $view = $this->$action(); //string 값이 비어있을 때 오류
+        if(empty($view) && gettype($view) === "string" ) {
             echo "Controller 에러 발생";
             exit();
         }
