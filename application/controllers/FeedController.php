@@ -31,9 +31,11 @@ class FeedController extends Controller {
                     if(!is_dir($saveDirectory)) {
                         mkdir($saveDirectory, 0777, true); //디렉토리 생성
                     }
+                    
                     $tempName = $_FILES["imgs"]["tmp_name"][$key]; // FileUtils
-                    if(move_uploaded_file($tempName, $saveDirectory. "/".getRandomFileNm($originFileNm))) {
-                        $param = ["feedImg" => getRandomFileNm($originFileNm), "ifeed" => $ifeed];
+                    $randomImg = getRandomFileNm($originFileNm);
+                    if(move_uploaded_file($tempName, $saveDirectory. "/".$randomImg)) {
+                        $param = ["feedImg" => $randomImg, "ifeed" => $ifeed];
                         $this-> model-> insFeedImg($param);
                     }
                 }
@@ -48,7 +50,12 @@ class FeedController extends Controller {
                     "startIdx" => $startIdx,
                     "iuser" => getIuser()
                 ];
-                return $this->model->selFeedList($param);
+                $list = $this->model->selFeedList($param);
+                foreach($list as $item) {
+                    $imgs = $this->model ->selFeedImgList($item);
+                    $item->imgList = $imgs;
+                }
+                return $list;
         }
     }
 }
