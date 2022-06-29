@@ -6,7 +6,7 @@
         return isset($_GET['url']) ? rtrim($_GET['url'], '/') : "";
     }
     function getUrlPaths() {
-        $getUrl = getUrl();        
+        $getUrl = getUrl(); // url을 '/'를 기준으로 나눠서 배열로 저장        
         return $getUrl !== "" ? explode('/', $getUrl) : "";
     }
 
