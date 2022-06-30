@@ -27,5 +27,22 @@ class UserModel extends Model {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
+
+    public function selUserByIuser(&$param) {
+        $sql = "SELECT iuser, email, nm, cmt, mainimg, regdt 
+                  FROM t_user
+                 WHERE iuser = :iuser";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":iuser", $param["iuser"]);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+    public function updUser(&$param) {
+        $sql = "UPDATE t_user SET nm = :nm, intro = :intro WHERE iuser = :iuser";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt -> execute(array($param['nm'], $param['intro'], $param['iuser']));
+        return $stmt->fetch(PDO::FETCH_OBJ);
+
+    }
     
 }
