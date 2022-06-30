@@ -2,16 +2,16 @@
 <div class="header">
     <header class="container py-3">
         <div id="globalConst">
-            <div class="d-flex flex-column flex-md-row align-items-center">
+            <div class="d-flex flex-row align-items-center">
                 <div class="d-inline-flex flex-grow-1 flex-shrink-0">
                     <a href="/feed/index">
                         <img src="/static/svg/logo.svg">
                     </a>
                 </div>
-                <div class="d-inline-flex flex-grow-1 flex-shrink-0">
+                <div class="d-inline-flex flex-grow-1 flex-shrink-1">
                 </div>
                 <div class="d-inline-flex flex-grow-1 flex-shrink-0">
-                    <nav class="d-flex flex-grow-1 flex-column flex-md-row justify-content-end">
+                    <nav class="d-flex flex-grow-1 flex-row justify-content-end">
                          <!--게시글 추가-->
                         <div class="d-inline-flex me-3">
                             <a href="#" id="navDropdownMenuLink" data-bs-toggle="dropdown">
@@ -109,15 +109,15 @@
                     <input type="file" accept="image/*" name="imgs" multiple class="d-none">
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">이름</label>
-                        <input type="text" class="form-control" id="recipient-name" value="<?=getLoginUser()->nm?>">
+                        <input type="text" class="form-control" id="recipient-name" name="nm" value="<?=getLoginUser()->nm?>">
                     </div>
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">사용자 이름</label>
-                        <input type="text" class="form-control" id="recipient-name" value="<?=getLoginUser()->email?>">
+                        <input type="text" class="form-control" id="message-text" name="email" value="<?=getLoginUser()->email?>">
                     </div>
                     <div class="mb-3">
-                        <label for="message-text" class="col-form-label">소개</label>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <label for="intro" class="col-form-label">소개</label>
+                        <textarea class="form-control" id="intro" name="intro"><?=getLoginUser()->intro?></textarea>
                     </div>
 
                     <div>
