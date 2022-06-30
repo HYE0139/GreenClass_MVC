@@ -3,7 +3,7 @@ namespace application\controllers;
 
 class Controller {    
     protected $model;
-    private static $needLoginUrlArr = ["feed"]; //주소값 feed에 접근하려면 로그인이 필요
+    private static $needLoginUrlArr = ["feed", "user/feedWin"]; //주소값 feed에 접근하려면 로그인이 필요
 
     public function __construct($action, $model) {    
         if(!isset($_SESSION)) {
