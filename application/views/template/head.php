@@ -12,7 +12,10 @@
                 ";
             }
         }
-
+    ?>
+        <script defer src="/static/js/common.js"></script>
+        <script defer src="/static/js/feed/common_feed.js"></script>
+    <?php
         if(isset($this->js)) {
             foreach($this->js as $item) {
                 $src = strpos($item, "http") === 0 ? $item : "/static/js/{$item}.js";
