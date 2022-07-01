@@ -51,20 +51,13 @@ class UserController extends Controller {
 
     public function feedwin() {
         $iuser = isset($_GET["iuser"]) ? intval($_GET["iuser"]) : 0;
-        $param = [ "iuser" => $iuser ];
-        $this->addAttribute(_DATA, $this->model->selUserByIuser($param));
-        $this->addAttribute(_JS, ["user/feedwin", "https://unpkg.com/swiper@8/swiper-bundle.min.js"]);        
-        $this->addAttribute(_CSS, ["user/feedwin", "https://unpkg.com/swiper@8/swiper-bundle.min.css"]);        
+        $param = [ "feediuser" => $iuser, "loginiuser" => getIuser() ];
+        $this->addAttribute(_DATA, $this->model->selUserProfile($param));        
         $this->addAttribute(_MAIN, $this->getView("user/feedwin.php"));
         return "template/t1.php";
     }
 
-    // public function updProfile() {
-    //     switch(getMethod()) {
-    //         case _GET :
-    //             return "feed/index.php";
-    //         case _POST :
-    //              
-    //     }
-    // }
+    
+
+   
 }
