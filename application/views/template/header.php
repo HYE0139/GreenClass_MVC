@@ -49,7 +49,6 @@
                         <div class="d-inline-flex dropdown"> 
                             <a href="#" role="button" id="navDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" class="header_profile">
                                 <div class="circleimg h30 w30">
-                                    <!-- <img src="/static/img/profile/<?=$_SESSION[_LOGINUSER]->iuser?>/<?=$_SESSION[_LOGINUSER]->mainimg?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지"> -->
                                     <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
                                 </div>
                             </a>
@@ -101,7 +100,7 @@
                 <h5 class="modal-title" id="profileModalLabel">프로필</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
-            <div class="profile_img circleimg h100 w100 pointer">
+            <div class="profile_img circleimg h100 w100 pointer" data-bs-toggle="modal" data-bs-target="#profileImgModal">
                         <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
                     </div>
             <div class="modal-body">
@@ -117,7 +116,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="intro" class="col-form-label">소개</label>
-                        <textarea class="form-control" id="intro" name="intro"><?=getLoginUser()->intro?></textarea>
+                        <textarea class="form-control" id="intro" name="intro"><?=getLoginUser()->cmt?></textarea>
                     </div>
 
                     <div>
@@ -131,4 +130,15 @@
         
     </div>
     
+ </div>
+
+ <div class="modal fade t-center" id="profileImgModal" tabindex="-1" aria-labelledby="profileImgModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content" id="profileImgModalContent">
+            <div class="modal-body-menu bold title">프로필 사진 바꾸기</div>
+            <div class="modal-body-menu fblue">사진 업로드</div>
+            <div class="modal-body-menu fred">현재 사진 삭제</div>
+            <div class="modal-body-menu" data-bs-dismiss="modal" aria-label="close" >취소</div>       
+        </div>   
+    </div> 
  </div>
