@@ -4,7 +4,7 @@ namespace application\controllers;
 class FeedController extends Controller {
     public function index() {
         $this -> addAttribute(_MAIN, $this->getView("feed/index.php"));
-        $this -> addAttribute(_JS, ["feed/index", "https://unpkg.com/swiper@8/swiper-bundle.min.js"]);
+        $this -> addAttribute(_JS, ["feed/index", "feed/common_feed", "https://unpkg.com/swiper@8/swiper-bundle.min.js"]);
         $this -> addAttribute(_CSS, ["feed/index", "https://unpkg.com/swiper@8/swiper-bundle.min.css"]);
         return "template/t1.php";
     }
