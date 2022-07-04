@@ -1,7 +1,8 @@
 <?php
 namespace application\controllers;
 
-class Controller {    
+class Controller {  
+    protected $ctx;  
     protected $model;
     private static $needLoginUrlArr = ["feed", "user/feedWin"]; //주소값 feed에 접근하려면 로그인이 필요
 
@@ -32,7 +33,7 @@ class Controller {
             echo json_encode($view);
         }        
     }
-    private function chkLoginUrl() {
+    private function getModel() {
 
     }
     
