@@ -14,7 +14,9 @@
                         <div>
                             <?= $this->data->email ?>
                             <?php if($this->data->iuser == getIuser()) { ?>
+
                             <button type="button" id="btnModProfile" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#profileModal">프로필 수정</button>
+
                             <?php } else { ?>
                             <button type="button" id="btnFollowToo" data-follow="0" class="btn btn-primary <?= $follower && !$following ? "" : "d-none" ?> ">맞팔로우 하기</button>
                             <button type="button" id="btnFollow" data-follow="0" class="btn btn-primary <?= !$follower && !$following ? "" : "d-none" ?> ">팔로우</button>
