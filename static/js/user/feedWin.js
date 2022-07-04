@@ -1,3 +1,26 @@
+const url = new URL(location.href);
+
+function getFeedList() {
+   
+    if(!feedObj) { return; }
+    feedObj.showLoading(); 
+
+    const param = {
+        page : feedObj.currentPage++,
+        iuser : url.searchParams.get('iuser')
+    }
+    fetch('/user/feed' + encodeQueryString(param))
+    .then(res => res.json())
+    .then(list => {                
+        feedObj.makeFeedList(list);                
+    })
+    .catch(e => {
+        console.error(e);
+        feedObj.hideLoading();
+    });
+}
+getFeedList();
+
 (function() {
     const gData = document.querySelector('#gData');
     const btnFollow = document.querySelectorAll('.btnFollow');
@@ -16,26 +39,28 @@
                         console.log(res);
                         if(res.result) {
                             btn.classList.add('d-none');
-                            if(btn.dataset.follower === "1") {
+                            if(btn.dataset.follower == "1") {
                                 document.querySelector("#btnFollowToo").classList.remove("d-none");
                             } else {
                                 document.querySelector("#btnFollow").classList.remove("d-none");
                             }
-                            
                         }
                     });
                     break;
+
                 case '0': //팔로우 등록
-                    fetch(followUrl, {method : 'POST', body : JSON.stringify(param)})
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res.result) {
-                            btn.classList.add("d-none");
-                            document.querySelector("#btnCancel").classList.remove("d-none");
-                          }
-            
+                fetch(followUrl, { method: "POST",
+                headers: { "Content-Type": "application/json"},  body: JSON.stringify(param),
+                  })
+                    .then((res) => res.json())
+                    .then((res) => {
+                      //   console.log(res);
+                      if (res.result) {
+                        btn.classList.add("d-none");
+                        document.querySelector("#btnCancel").classList.remove("d-none");
+                      }
                     });
-                    break;
+                  break;
             }
         });
     });
