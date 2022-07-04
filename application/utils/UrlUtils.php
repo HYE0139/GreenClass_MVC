@@ -1,6 +1,7 @@
 <?php
     function getJson() {
         return json_decode(file_get_contents('php://input'), true);
+        //json 데이터를 배열로 저장
     }
 
     function getParam($key) { // 쿼리스트링에 있었으면 GET방식으로 아니면 빈값으로

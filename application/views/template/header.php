@@ -100,9 +100,11 @@
                 <h5 class="modal-title" id="profileModalLabel">프로필</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
-            <div class="profile_img circleimg h100 w100 pointer" data-bs-toggle="modal" data-bs-target="#profileImgModal">
-                        <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
-                    </div>
+            <a class="dropdown-item" href="/user/feedwin?iuser=<?=getIuser()?>" style="display:block;">
+                <div class="profile_img circleimg h100 w100 pointer">
+                    <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
+                </div>
+            </a>
             <div class="modal-body">
                 <form><!--js로 파일첨부 창 열리게 하기-->
                     <input type="file" accept="image/*" name="imgs" multiple class="d-none">
