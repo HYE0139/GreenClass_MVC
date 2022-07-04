@@ -1,6 +1,6 @@
 (function() {
     const gData = document.querySelector('#gData');
-    const btnFollow = document.querySelectorAll('#btnFollow');
+    const btnFollow = document.querySelectorAll('.btnFollow');
     btnFollow.forEach( btn => {
         btn.addEventListener('click', function() {
             const param = { toiuser : parseInt(gData.dataset.toiuser) };
@@ -29,7 +29,11 @@
                     fetch(followUrl, {method : 'POST', body : JSON.stringify(param)})
                     .then(res => res.json())
                     .then(res => {
-                       
+                        if (res.result) {
+                            btn.classList.add("d-none");
+                            document.querySelector("#btnCancel").classList.remove("d-none");
+                          }
+            
                     });
                     break;
             }
