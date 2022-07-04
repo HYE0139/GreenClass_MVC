@@ -131,7 +131,7 @@
     </div>
     
  </div>
-
+ <!--profile update-->
  <div class="modal fade t-center" id="profileImgModal" tabindex="-1" aria-labelledby="profileImgModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content" id="profileImgModalContent">

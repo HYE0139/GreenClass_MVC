@@ -1,10 +1,10 @@
-<div>
+<div id="gData" data-toiuser="<?=$this->data->iuser?>"></div>
     <div class="d-flex flex-column align-items-center">
         <div class="size_box_100"></div>
         <div class="w100p_mw614">
             <div class="d-flex flex-row">            
                     <div class="d-flex flex-column justify-content-center">
-                        <div class="circleimg h150 w150 pointer feedwin" id="profileImg" data-bs-toggle="modal" data-bs-target="#myProfileModal">
+                        <div class="circleimg h150 w150 pointer feedwin" id="profileImg" <?php if($this->data->iuser == getIuser()) { ?> data-bs-toggle="modal" data-bs-target="#myProfileModal" <?php } ?>>
                             <img src='/static/img/profile/<?=$this->data->iuser?>/<?=$this->data->mainimg?>' onerror='this.error=null;this.src="/static/img/profile/defaultProfileImg_100.png"'>
                         </div>
                     </div>
@@ -14,9 +14,9 @@
                         <div>
                             <?= $this->data->email ?>
                             <?php if($this->data->iuser == getIuser()) { ?>
-                            <button type="button" id="btnModProfile" class="btn btn-outline-secondary ">프로필 수정</button>
+                            <button type="button" id="btnModProfile" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#profileModal">프로필 수정</button>
                             <?php } else { ?>
-                            <button type="button" id="btnFollow" data-follow="0" class="btn btn-primary <?= $follower && !$following ? "" : "d-none" ?> ">맞팔로우 하기</button>
+                            <button type="button" id="btnFollowToo" data-follow="0" class="btn btn-primary <?= $follower && !$following ? "" : "d-none" ?> ">맞팔로우 하기</button>
                             <button type="button" id="btnFollow" data-follow="0" class="btn btn-primary <?= !$follower && !$following ? "" : "d-none" ?> ">팔로우</button>
                             <button type="button" id="btnFollow" data-follow="1" class="btn btn-outline-secondary <?= $following ? "" : "d-none" ?> ">
                                 <svg aria-label="팔로잉" class="_ab6-" color="#262626" fill="#262626" height="15" role="img" viewBox="0 0 95.28 70.03" width="20">
@@ -36,16 +36,4 @@
             </div>
         </div>
     </div>
-</div>
-<?php if($this->data->iuser == getIuser()) { ?>
-<div class="modal fade t-center" id="myProfileModal" tabindex="-1" aria-labelledby="myProfileModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content" id="myProfileModalContent">
-            <div class="modal-body-menu bold title">프로필 사진 바꾸기</div>
-            <div class="modal-body-menu fblue">사진 업로드</div>
-            <div class="modal-body-menu fred">현재 사진 삭제</div>
-            <div class="modal-body-menu" data-bs-dismiss="modal" aria-label="close" >취소</div>       
-        </div>   
-    </div> 
- </div>
-<?php } ?>
+

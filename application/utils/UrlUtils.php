@@ -1,4 +1,8 @@
 <?php
+    function getJson() {
+        return json_decode(file_get_contents('php://input'), true);
+    }
+
     function getParam($key) { // 쿼리스트링에 있었으면 GET방식으로 아니면 빈값으로
         return isset($_GET[$key]) ? $_GET[$key] : "";
     }
@@ -23,3 +27,5 @@
         }
         return false;
     }
+
+  

@@ -50,4 +50,24 @@ class UserModel extends Model {
 
     }
     
+    public function insFollow(&$param) {
+        $sql = "INSERT INTO t_user_follow
+                (fromiuser, toiuser)
+                VALUES
+                (:fromiuser, :toiuser)";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt -> execute(array($param['fromiuser'], $param['toiuser']));
+        return $stmt -> rowCount();
+    }
+
+    public function delFollow(&$param) {
+        $sql = "DELETE FROM t_user_follow
+                 WHERE fromiuser = :fromiuser
+                   AND toiuser = :toiuser";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt -> execute(array($param['fromiuser'], $param['toiuser']));
+        return $stmt -> rowCount();
+
+    }
 }
