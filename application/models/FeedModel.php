@@ -19,11 +19,12 @@
             $sql = "INSERT INTO t_feed_img
                     (ifeed, img)
                     VALUES
-                    (:ifeed, :feedImg)
+                    (:ifeed, :img)
             ";
 
             $stmt = $this->pdo->prepare($sql);
-            $stmt -> execute(array( $param["ifeed"], $param["feedImg"]));
+            $stmt -> execute(array( $param["ifeed"], $param["img"]));
+            return $stmt->rowCount();
             
         }
 
@@ -44,26 +45,41 @@
                         ON A.ifeed = E.ifeed
                  LEFT JOIN
                         (
-                            SELECT ifeed, COUNT(ifeed) AS isFav
+                            SELECT ifeed
                               FROM t_feed_fav
                              WHERE iuser = :iuser
-                          GROUP BY ifeed
                         ) D
                         ON A.ifeed = D.ifeed
                   ORDER BY A.ifeed DESC
-                     LIMIT :startIdx, :feedItemCnt;
+                     LIMIT :startIdx, :feedItemCnt
             ";
             $stmt = $this ->pdo ->prepare($sql);
             $stmt -> execute(array( $param["iuser"], $param["startIdx"], _FEED_ITEM_CNT));
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
 
-        // 유저가 올린 feed의 이미지
+        // 글 작성 후 바로 피드 정보 가져오기
+        public function selFeedAfterReg(&$param) {
+            $sql = "SELECT A.ifeed, A.location, A.ctnt, A.iuser, A.regdt
+                         , C.nm AS writer, C.mainimg
+                         , 0 AS favCnt
+                         , 0 AS isFav
+                      FROM t_feed A
+                INNER JOIN t_user C 
+                        ON A.iuser = C.iuser
+                     WHERE A.ifeed = :ifeed
+                  ORDER BY A.ifeed DESC         
+            ";
+            $stmt = $this ->pdo ->prepare($sql);
+            $stmt -> execute(array($param["ifeed"]));
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        }
+
+        // 유저가 올린 feed에 포함된 이미지
         public function selFeedImgList($param) {
             $sql = "SELECT img FROM t_feed_img WHERE ifeed = :ifeed";
             $stmt = $this ->pdo ->prepare($sql);
-            $stmt -> execute(array($param->ifeed));
-
+            $stmt -> execute(array($param["ifeed"]));
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
 
