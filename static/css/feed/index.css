@@ -17,3 +17,8 @@ font-family: var(--font) }
 .swiper-button-prev.swiper-button-disabled {
     display: none;
 }
+.swiper-button-next img,
+.swiper-button-prev img {
+    border-radius: 50%;
+    box-shadow: 3px 2px 2px #353535;
+}

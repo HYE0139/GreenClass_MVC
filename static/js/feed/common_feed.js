@@ -5,22 +5,65 @@ const feedObj = {
     swiper : null,
     loadingElem : document.querySelector('.loading'),
     containerElem : document.querySelector('#item_container'),
+
+    refreshSwipe: function() {
+        if(this.swiper !== null) { this.swiper = null; }
+        this.swiper = new Swiper('.swiper', {
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            },
+            pagination: { el: '.swiper-pagination' },
+            allowTouchMove: false,
+            direction: 'horizontal',
+            loop: false
+        });
+    },
+
+    loadingElem: document.querySelector('.loading'),
+    containerElem: document.querySelector('#item_container'),  
+    
+    getFeedCmtList : function(ifeed, divCmtList, spanMoreCmt){
+        fetch(`/feedCmt/index?ifeed=${ifeed}`)
+        .then(res =>res.json())
+        .then(res => { 
+            if(res && res.length > 0) { // 문자열이 0 이상이 되면
+                if(spanMoreCmt) { spanMoreCmt.remove(); }
+                divCmtList.innerHTML = null;
+                res.forEach(item => {
+                    const divCmtItem = this.makeCmtItem(item);
+                    divCmtList.appendChild(divCmtItem);
+                });
+            }
+        });
+    },
+
+    // 피드 영역에 댓글 보이기
     makeCmtItem : function(item) {
         const divCmtItemContainer = document.createElement('div');
-        divCmtItemContainer.className = 'cmtItemCont';
+        divCmtItemContainer.className = 'd-flex flex-row align-items-center mb-2';
         const src = '/static/img/profile/' + (item.writerimg ? `${item.iuser}/${item.writerimg}` : 'defaultProfileImg_100.png');
         divCmtItemContainer.innerHTML = `
-            <div class="cmtItemProfile">
-                <img src="${src}" class="profile w24 h24 pointer">
+            <div class="circleimg h24 w24 me-1">
+                <img src="${src}" class="profile pointer">
             </div>
             <div class="d-flex flex-row">
-                <div class="pointer me-2">${item.writer} - <span class="rem0_8">${getDateTimeInfo(item.regdt)}</span></div>
+                <div class="pointer me-2 bold">${item.writer} <span class="rem0_5 fc-g ">${getDateTimeInfo(item.regdt)}</span></div>
                 <div>${item.cmt}</div>
             </div>
         `;
+        const img = divCmtItemContainer.querySelector('img');
+        img.addEventListener('click', e => {
+            moveToFeedWin(item.iuser);
+        });
+        
         return divCmtItemContainer;
     },
 
+    
+
+    // feed contents list
+    // getFeedList로 받아온 feed를 리스트 형식으로
     makeFeedList: function(list) {
         if(list.length !== 0) {
             list.forEach(item => {
@@ -28,19 +71,10 @@ const feedObj = {
                 this.containerElem.appendChild(divItem);
             });
         }
-
-        this.swiper = new Swiper ('.swiper', {
-            navigation : {
-                nextEl : '.swiper-button-next',
-                prevEl : '.swiper-button-prev'
-            },
-            pagination : {el : '.swiper-pagination'},
-            allowTochMove : false, // 드래그로 이미지 넘기기 허용이면 true
-            direction : 'horizontal',
-            loop : false,
-        });
+        // 피드 이미지 슬라이드
+        this.refreshSwipe();
         this.hideLoading();
-    }, // getFeedList로 받아온 feed를 리스트 형식으로 
+    },  
 
 
     // feed contents
@@ -60,8 +94,8 @@ const feedObj = {
                 <div class="circleimg h40 w40 pointer feedWin">${writerImg}</div>
             </div>
             <div class="p-3 flex-grow-1">
-                <div><span class="pointer feedWin">${item.writer}</span>  <span class="fc-g">- ${regDtInfo}</span></div>
-                <div class="fc-g">${item.location === null ? '' : item.location}</div>
+                <div><span class="pointer feedWin">${item.writer}</span>  <span class="fc-g rem0_7">${regDtInfo}</span></div>
+                <div class="fc-g rem0_8">${item.location === null ? '' : item.location}</div>
             </div>
         `;
         const feedWinList = divTop.querySelectorAll('.feedWin');
@@ -93,8 +127,8 @@ const feedObj = {
             img.className = 'w100p_mw614';
             img.src = `/static/img/feed/${item.ifeed}/${imgObj.img}`;
         });
-        if(this.swiper !== null) { this.swiper = null; }
         
+        // -------------- 좋아요 버튼 ----------------
         const divBtns = document.createElement('div');
         divContainer.appendChild(divBtns);
         divBtns.className = 'favCont p-3 d-flex flex-row';
@@ -157,7 +191,7 @@ const feedObj = {
             divCtnt.className = 'itemCtnt p-3';
         }
 
-        // 댓글
+        // -----------------댓글----------------------
         const divCmtList = document.createElement('div');
         divContainer.appendChild(divCmtList);
         divCmtList.className = 'ms-3';
@@ -166,6 +200,7 @@ const feedObj = {
         divContainer.appendChild(divCmt);
 
 
+        const spanMoreCmt = document.createElement('span');
         if(item.cmt) {
             const divCmtItem = this.makeCmtItem(item.cmt);
             divCmtList.appendChild(divCmtItem);
@@ -175,12 +210,12 @@ const feedObj = {
                 divCmt.appendChild(divMoreCmt);
                 divMoreCmt.className = 'ms-3 mb-3';
 
-                const spanMoreCmt = document.createElement('span');
                 divMoreCmt.appendChild(spanMoreCmt);
-                spanMoreCmt.className = 'pointer  rem0_9 c_lightgray';
+                spanMoreCmt.className = 'pointer rem0_9 c_lightgray';
                 spanMoreCmt.innerText = '더보기...';
-                spanMoreCmt.addEventListener('click', e => {
 
+                spanMoreCmt.addEventListener('click', e => {
+                    this.getFeedCmtList(item.ifeed, divCmtList, spanMoreCmt);
                 });
             }
         }
@@ -195,14 +230,23 @@ const feedObj = {
             <input type="text" class="flex-grow-1 my_input back_color p-2" placeholder="댓글을 입력하세요...">
             <button type="button" class="btn btn-outline-primary">게시</button>
         `;
+
         const inputCmt = divCmtForm.querySelector('input');
         const btnCmtReg = divCmtForm.querySelector('button');
+
+        // 댓글 작성시, enter 누르면 이벤트 함수, click 실행
+        inputCmt.addEventListener('keyup', e => {
+            if(e.key === 'Enter') {
+                btnCmtReg.click();
+            }
+        });
+
         btnCmtReg.addEventListener('click', e => {
             const param = {
                 ifeed : item.ifeed,
                 cmt : inputCmt.value
             };
-            // 댓글
+            // 댓글 보내기
             fetch('/feedCmt/index', {
                 method : 'POST',
                 body : JSON.stringify(param)
@@ -210,16 +254,12 @@ const feedObj = {
             })
             .then(res=> res.json())
             .then(res=> {
-                console.log('icmt :' + res.result);
                 if(res.result){
                     inputCmt.value = '';
+                    this.getFeedCmtList(param.ifeed, divCmtList, spanMoreCmt);
                 }
-
-            });
+            });  
         });
-
-        
-
 
         return divContainer;
     },
@@ -229,11 +269,12 @@ const feedObj = {
     hideLoading : function() { this.loadingElem.classList.add('d-none'); }
 }
 
+// 해당 주소로 이동
 function moveToFeedWin(iuser) {
     location.href = `/user/feedwin?iuser=${iuser}`;
 }
 
-
+// New Feed - 이미지가 첨부된 새로운 피드, JSON으로  DB에 보내기
 (function() {
     const btnNewFeedModal = document.querySelector('#btnNewFeedModal');
     if(btnNewFeedModal) {
@@ -280,14 +321,23 @@ function moveToFeedWin(iuser) {
                     fData.append('ctnt', body.querySelector('textarea').value);
                     fData.append('location', body.querySelector('input[type=text]').value);
 
+                    // feedController -> function rest() : 새로 작성된 feed 를 DB에 보내는 함수
                     fetch('/feed/rest', {
                         method: 'POST',
                         body: fData
                     }).then(res => res.json())
                         .then(myJson => {
                             console.log(myJson);
-                             if(myJson.result) {
-                                btnClose.click(); //json 통신이 끝나면 창이 닫힘
+                             if(myJson) {
+                                btnClose.click(); //json 통신이 끝나면 창이 닫히는 이벤트 실행
+                                
+                                const lData = document.querySelector('#lData');
+                                const gData = document.querySelector('#gdata');
+                                if(lData && lData.dataset.toiuser !== gData.dataset.loginiuser) { return; }
+
+                                const feedItem = feedObj.makeFeedItem(myJson);
+                                feedObj.containerElem.prepend(feedItem);
+                                feedObj.refreshSwipe();
                             }
                         });
                 });

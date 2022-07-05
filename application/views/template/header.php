@@ -54,7 +54,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navDropdownMenuLink">
                                 <li>
-                                    <a href="#" id="btnNewFeedModal" data-bs-toggle="modal" data-bs-target="#profileModal" class="dropdown-item">
+                                    <a href="/user/feedwin?iuser=<?=getIuser()?>" class="dropdown-item">
                                         <span>
                                             <svg aria-label="프로필" class="_8-yf5 " color="#262626" fill="#262626" height="16" role="img" viewBox="0 0 24 24" width="16"><circle cx="12.004" cy="12.004" fill="none" r="10.5" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"></circle><path d="M18.793 20.014a6.08 6.08 0 00-1.778-2.447 3.991 3.991 0 00-2.386-.791H9.38a3.994 3.994 0 00-2.386.791 6.09 6.09 0 00-1.779 2.447" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"></path><circle cx="12.006" cy="9.718" fill="none" r="4.109" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"></circle></svg>
                                         </span>
@@ -70,10 +70,10 @@
             </div>
         </div>
     </header>
- </div>
- <!--New Feed Create Modal-->
- <div class="modal fade" id="newFeedModal" tabindex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+</div>
+<!--New Feed Create Modal-->
+<div class="modal fade" id="newFeedModal" tabindex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content" id="newFeedModalContent">
 
             <div class="modal-header">
@@ -82,17 +82,16 @@
             </div>
 
             <div class="modal-body" id="id-modal-body"><!-- index.js >> innerHTML --></div>
-        </div>
-            <form class="d-none">
-                <input type="file" accept="image/*" name="imgs" multiple>
-            </form>
-        
-    </div>
-    
- </div>
 
- <!--Profile Setting Modal-->
- <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        </div>
+        <form class="d-none">
+            <input type="file" accept="image/*" name="imgs" multiple>
+        </form>     
+    </div>   
+</div>
+
+<!--Profile Setting Modal-->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="profileModalContent">
 
@@ -100,41 +99,37 @@
                 <h5 class="modal-title" id="profileModalLabel">프로필</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
-            <a class="dropdown-item" href="/user/feedwin?iuser=<?=getIuser()?>" style="display:block;">
-                <div class="profile_img circleimg h100 w100 pointer">
-                    <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
-                </div>
-            </a>
-            <div class="modal-body">
-                <form><!--js로 파일첨부 창 열리게 하기-->
-                    <input type="file" accept="image/*" name="imgs" multiple class="d-none">
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">이름</label>
-                        <input type="text" class="form-control" id="recipient-name" name="nm" value="<?=getLoginUser()->nm?>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">사용자 이름</label>
-                        <input type="text" class="form-control" id="message-text" name="email" value="<?=getLoginUser()->email?>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="intro" class="col-form-label">소개</label>
-                        <textarea class="form-control" id="intro" name="intro"><?=getLoginUser()->cmt?></textarea>
-                    </div>
-
-                    <div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
+               
+            <div class="profile_img circleimg h150 w150 pointer" data-bs-toggle="modal" data-bs-target="#profileImgModal" >
+                <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
             </div>
+                
+            <div class="modal-body">
+                <input type="file" accept="image/*" name="imgs" multiple class="d-none">
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">이름</label>
+                    <input type="text" class="form-control" id="recipient-name" name="nm" value="<?=getLoginUser()->nm?>">
+                </div>
+                <div class="mb-3">
+                    <label for="message-text" class="col-form-label">사용자 이름</label>
+                    <input type="text" class="form-control" id="message-text" name="email" value="<?=getLoginUser()->email?>">
+                </div>
+                <div class="mb-3">
+                    <label for="intro" class="col-form-label">소개</label>
+                    <textarea class="form-control" id="intro" name="intro"><?=getLoginUser()->cmt?></textarea>
+                </div>
 
-        </div>     
-        
-    </div>
-    
- </div>
- <!--profile update-->
- <div class="modal fade t-center" id="profileImgModal" tabindex="-1" aria-labelledby="profileImgModalLabel" aria-hidden="true">
+                <div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>        
+    </div>   
+</div>
+
+<!--profile update-->
+<div class="modal fade t-center" id="profileImgModal" tabindex="-1" aria-labelledby="profileImgModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content" id="profileImgModalContent">
             <div class="modal-body-menu bold title">프로필 사진 바꾸기</div>
@@ -143,4 +138,4 @@
             <div class="modal-body-menu" data-bs-dismiss="modal" aria-label="close" >취소</div>       
         </div>   
     </div> 
- </div>
+</div>
