@@ -45,6 +45,34 @@ class UserModel extends Model {
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
+    public function upUser(&$param) {
+        $sql = "UPDATE t_user
+                SET moddt = now() ";
+        if(isset($param["mainimg"])) {
+            $mainimg = $param["mainimg"];
+            $sql .=", mainimg = '{$mainimg}'";
+        }
+        if(isset($param["delMainImg"])) {
+            $sql .= ",mainimg = null";
+        }
+        // 문자열 합치기 니까 띄어쓰기 조심하기!
+        $sql .=" WHERE iuser = :iuser";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt -> bindValue(":iuser", $param["iuser"]);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
+    public function updProfileImg(&$param) {
+        $sql = "UPDATE t_user
+                   SET mainimg = :img
+                 WHERE iuser = :iuser
+                 ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt -> execute(array($param["img"], $param["iuser"]));
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
 
     // ----------- Follow --------------
     public function insFollow(&$param) {
@@ -101,4 +129,6 @@ class UserModel extends Model {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);        
     }
+
+    
 }
