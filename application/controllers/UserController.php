@@ -76,6 +76,8 @@ class UserController extends Controller {
             foreach($list as $item) {         
                 $param2 = [ "ifeed" => $item->ifeed ];       
                 $item->imgList = Application::getModel("feed")->selFeedImgList($param2);
+                $item->cmt = Application::getModel("feedcmt")->selFeedCmt($param2);
+
             }
             return $list;
         }
@@ -95,6 +97,57 @@ class UserController extends Controller {
             case _DELETE:
                 $param["toiuser"] = $_GET["toiuser"];
                 return [_RESULT => $this->model->delFollow($param)];
+        }
+    }
+
+    public function profile() {
+        switch(getMethod()) {
+            case _DELETE :
+                $loginUser = getLoginUser();
+                if($loginUser && $loginUser->mainimg !== null) {
+                    $path = "static/img/profile/{$loginUser->iuser}/{$loginUser->mainimg}";
+                    if(file_exists($path) && unlink($path)) {
+                        $param = ["iuser" => $loginUser->iuser, "delMainImg" => 1];
+                        if($this->model->upUser($param)) {
+                            rmdir("static/img/profile/{$loginUser->iuser}");
+                            $loginUser->mainimg = null;
+                            return [_RESULT => 1];
+                        }
+                    }
+                }
+            case _POST :
+                if(!is_array($_FILES) || !isset($_FILES["imgs"])) {
+                    return ["result" => 0];
+                }
+                
+                $iuser = getLoginUser()->iuser;
+                $saveDirectory = _IMG_PATH . "/profile/" . $iuser; 
+                    if(!is_dir($saveDirectory)) {
+                        mkdir($saveDirectory, 0777, true); 
+                    }
+                $profilePic = $_FILES["imgs"]["name"];
+                $tempName = $_FILES["imgs"]["tmp_name"];
+                $randomProfile = getRandomFileNm($profilePic);
+                if(move_uploaded_file($tempName, $saveDirectory. "/".$randomProfile)) {
+                   if(getMainImgSrc()) {
+                        $saved_img = "static/img/profile/".getMainImgSrc();
+                        if(file_exists($saved_img)) {   
+                            unlink($saved_img);
+                        }
+                   }
+                   
+                   $param = [
+                        "iuser" => $iuser,
+                        "mainimg" => $randomProfile
+                   ]; 
+                    if($this->model->upUser($param)) {
+                        getLoginUser()->mainimg = $randomProfile;
+                        return [_RESULT => 1];
+                    }
+                }
+            
+            return [_RESULT => 0];
+
         }
     }
 
