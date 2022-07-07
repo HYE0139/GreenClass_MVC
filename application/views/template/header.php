@@ -49,7 +49,7 @@
                         <div class="d-inline-flex dropdown"> 
                             <a href="#" role="button" id="navDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" class="header_profile">
                                 <div class="circleimg h30 w30">
-                                    <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
+                                    <img class="delprofileImg" src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
                                 </div>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navDropdownMenuLink">
@@ -100,42 +100,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
                
-            <div class="profile_img circleimg h150 w150 pointer" data-bs-toggle="modal" data-bs-target="#profileImgModal" >
-                <img src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
+            <div class="profile_img circleimg h150 w150 pointer">
+                <img class="delprofileImg" src="/static/img/profile/<?=getMainImgSrc()?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
             </div>
                 
+            <div class="modal-dialog modal-dialog-centered">
+                <button>수정</button>
+                <button type="button" id="btnDelCurrentProfilePic">삭제</button>
+            </div>
             <div class="modal-body">
+                <div class="mb-3">
+                    <div><?=getLoginUser()->email?></div>
+                </div>
                 <input type="file" accept="image/*" name="imgs" multiple class="d-none">
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">이름</label>
                     <input type="text" class="form-control" id="recipient-name" name="nm" value="<?=getLoginUser()->nm?>">
                 </div>
-                <div class="mb-3">
-                    <label for="message-text" class="col-form-label">사용자 이름</label>
-                    <input type="text" class="form-control" id="message-text" name="email" value="<?=getLoginUser()->email?>">
-                </div>
+              
                 <div class="mb-3">
                     <label for="intro" class="col-form-label">소개</label>
                     <textarea class="form-control" id="intro" name="intro"><?=getLoginUser()->cmt?></textarea>
                 </div>
 
                 <div>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
                 </div>
             </div>
         </div>        
     </div>   
 </div>
 
-<!--profile update-->
-<div class="modal fade t-center" id="profileImgModal" tabindex="-1" aria-labelledby="profileImgModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content" id="profileImgModalContent">
-            <div class="modal-body-menu bold title">프로필 사진 바꾸기</div>
-            <div class="modal-body-menu fblue">사진 업로드</div>
-            <div class="modal-body-menu fred">현재 사진 삭제</div>
-            <div class="modal-body-menu" data-bs-dismiss="modal" aria-label="close" >취소</div>       
-        </div>   
-    </div> 
-</div>
