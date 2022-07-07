@@ -3,8 +3,41 @@ const feedObj = {
     itemLength : 0,
     currentPage : 1,
     swiper : null,
-    loadingElem : document.querySelector('.loading'),
-    containerElem : document.querySelector('#item_container'),
+    getFeedUrl : '',
+    iuser : 0,
+    setScrollInfinity: function() {
+        window.addEventListener('scroll', e => {
+            const {
+                scrollTop,
+                scrollHeight,
+                clientHeight
+            } = document.documentElement;
+            //스크롤막대 top 위치값 + 스크롤막대 길이 >= 스크롤 전체
+            if(scrollTop + clientHeight >= scrollHeight - 10 && this.itemLength === this.limit ) {
+                this.getFeedList();
+            }
+        }, { passive : true });
+    },
+
+    getFeedList : function(){
+        this.itemLength = 0;
+        this.showLoading();
+        const param = {
+            page : this.currentPage++,
+            iuser : this.iuser
+        }
+
+        fetch(this.getFeedUrl + encodeQueryString(param))
+        .then(res => res.json())
+        .then(list => {   
+            this.itemLength = list.length;             
+            this.makeFeedList(list);                
+        })
+        .catch(e => {
+            console.error(e);
+            this.hideLoading();
+        });
+    },
 
     refreshSwipe: function() {
         if(this.swiper !== null) { this.swiper = null; }
@@ -45,7 +78,7 @@ const feedObj = {
         const src = '/static/img/profile/' + (item.writerimg ? `${item.iuser}/${item.writerimg}` : 'defaultProfileImg_100.png');
         divCmtItemContainer.innerHTML = `
             <div class="circleimg h24 w24 me-1">
-                <img src="${src}" class="profile pointer">
+                <img src="${src}" class="profile pointer delprofileImg">
             </div>
             <div class="d-flex flex-row">
                 <div class="pointer me-2 bold">${item.writer} <span class="rem0_5 fc-g ">${getDateTimeInfo(item.regdt)}</span></div>
@@ -88,7 +121,7 @@ const feedObj = {
 
         const regDtInfo = getDateTimeInfo(item.regdt);
         divTop.className = 'd-flex flex-row ps-3 pe-3';
-        const writerImg = `<img src='/static/img/profile/${item.iuser}/${item.mainimg}' onerror='this.error=null; this.src="/static/img/profile/defaultProfileImg_100.png"'>`;
+        const writerImg = `<img class="delprofileImg" src='/static/img/profile/${item.iuser}/${item.mainimg}' onerror='this.error=null; this.src="/static/img/profile/defaultProfileImg_100.png"'>`;
         divTop.innerHTML = `
             <div class="d-flex flex-column justify-content-center">
                 <div class="circleimg h40 w40 pointer feedWin">${writerImg}</div>
@@ -153,10 +186,17 @@ const feedObj = {
                     if(item.isFav === 0) {//좋아요 취소
                         heartIcon.classList.remove('fas');
                         heartIcon.classList.add('far');
+                        item.favCnt--; // 좋아요를 취소하면 favCnt 감소
+                        spanFavCnt.innerHTML = `좋아요 ${item.favCnt}개`; //감소된 값으로 입력됨
+                        if(item.favCnt === 0){ divFav.classList.add('d-none'); } //좋아요가 0이되면 문구지우기
+                        
                     } else { // 좋아요
                         heartIcon.classList.remove('far');
                         heartIcon.classList.add('fas');
+                        item.favCnt++; // 좋아요 숫자 증감
+                        divFav.classList.remove('d-none'); // 좋아요 문구 나타나게
                     }
+                    spanFavCnt.innerHTML = `좋아요 ${item.favCnt}개`;
                 } else {
                     alert('요청이 거부되었습니다.');
                 }
@@ -176,11 +216,12 @@ const feedObj = {
         divFav.className = 'p-3 d-none';
         const spanFavCnt = document.createElement('span');
         divFav.appendChild(spanFavCnt);
+        /* <div class="p-3 d-none"><span class="fc-g">좋아요 **개</span></div> */
 
         spanFavCnt.className = 'fc-g';
         spanFavCnt.innerHTML = `좋아요 ${item.favCnt}개`;
 
-        // 좋아요가 0개면 문구가 안보이게
+        // 좋아요가 0개 이상이면 문구가 나타나고 0개면 d-none
         if( item.favCnt > 0 ) { divFav.classList.remove('d-none'); }
 
         //feed Text 내용
@@ -257,7 +298,9 @@ const feedObj = {
                 if(res.result){
                     inputCmt.value = '';
                     this.getFeedCmtList(param.ifeed, divCmtList, spanMoreCmt);
-                }
+                } else {
+                    alert("댓글을 등록 할 수 없습니다.");
+                } 
             });  
         });
 
@@ -304,10 +347,10 @@ function moveToFeedWin(iuser) {
                 const imgElem = body.querySelector('#id-img');
 
                 const imgSource = e.target.files[0];
-                const reader = new FileReader(); //자바스크립트 기본객체
-                reader.readAsDataURL(imgSource);
-                reader.onload = function() {
-                imgElem.src = reader.result;
+                const reader = new FileReader(); //자바스크립트 기본객체, 비동기적으로 파일의 내용을 읽어오기 위해 사용
+                reader.readAsDataURL(imgSource); // FileReader() 객체에 포함된 메소드, readAsDataURL(읽고자 하는 Blob 또는 File)
+                reader.onload = function() { // .onload : 읽기가 성공했을 때
+                    imgElem.src = reader.result; // result : 반환된 파일의 내용
                 };
 
                 const shareBtnElem = body.querySelector('button'); //body.innerHTML 안에 있는 button
@@ -316,11 +359,10 @@ function moveToFeedWin(iuser) {
 
                     const fData = new FormData(); //자바스크립트 기본객체 = createElement('form')
                     for(let i=0; i<files.length; i++) {
-                        fData.append('imgs[]', files[i]);
+                        fData.append('imgs[]', files[i]);//이미지가 여러장일 경우
                     }
                     fData.append('ctnt', body.querySelector('textarea').value);
                     fData.append('location', body.querySelector('input[type=text]').value);
-
                     // feedController -> function rest() : 새로 작성된 feed 를 DB에 보내는 함수
                     fetch('/feed/rest', {
                         method: 'POST',
@@ -332,12 +374,13 @@ function moveToFeedWin(iuser) {
                                 btnClose.click(); //json 통신이 끝나면 창이 닫히는 이벤트 실행
                                 
                                 const lData = document.querySelector('#lData');
-                                const gData = document.querySelector('#gdata');
+                                const gData = document.querySelector('#gData');
                                 if(lData && lData.dataset.toiuser !== gData.dataset.loginiuser) { return; }
 
                                 const feedItem = feedObj.makeFeedItem(myJson);
                                 feedObj.containerElem.prepend(feedItem);
                                 feedObj.refreshSwipe();
+                                window.scrollTo(0, 0);
                             }
                         });
                 });
