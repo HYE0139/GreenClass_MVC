@@ -63,14 +63,14 @@
 
     </div>
 
-    <!--profile update-->
+    <!--Profile Image Update-->
 <div class="modal fade t-center" id="profileImgModal" tabindex="-1" aria-labelledby="profileImgModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content" id="profileImgModalContent">
             <div class="profile-modal-title bold">프로필 사진 바꾸기</div>
-            <div id="btnProfileImgUp"class="modal-item fblue">사진 업로드</div>
+            <div id="btnProfileImgUp" class=" modal-item fblue">사진 업로드</div>
             <div id="btnDelCurrentProfilePic" class="modal-item fred">현재 사진 삭제</div>
-            <div id="btnProfileImgModalClose"class="modal-item" data-bs-dismiss="modal" aria-label="close" >취소</div>    
+            <div id="btnProfileImgModalClose" class="modal-item" data-bs-dismiss="modal" aria-label="close" >취소</div>    
         </div>   
     </div>
 
@@ -79,4 +79,45 @@
     </form> 
 </div>
 
+<!--Profile Setting Modal-->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="profileModalContent">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileModalLabel">프로필</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+               
+            <div class="profile_img circleimg h150 w150 pointer">
+                <img class="delprofileImg" src="/static/img/profile/<?=$this->data->iuser?>/<?=$this->data->mainimg?>" onerror="this.onerror=null; this.src='/static/img/profile/defaultProfileImg_100.png'" alt="프로필이미지">
+            </div>
+                
+            <div class="modal-dialog modal-dialog-centered">
+                <button>수정</button>
+                <div id ="delbutton"class="fred">삭제</div>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div><?=getLoginUser()->email?></div>
+                </div>
+                <input type="file" accept="image/*" name="imgs" multiple class="d-none">
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">이름</label>
+                    <input type="text" class="form-control" id="recipient-name" name="nm" value="<?=getLoginUser()->nm?>">
+                </div>
+              
+                <div class="mb-3">
+                    <label for="intro" class="col-form-label">소개</label>
+                    <textarea class="form-control" id="intro" name="intro"><?=getLoginUser()->cmt?></textarea>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </div>
+        </div>        
+    </div>   
+</div>
 

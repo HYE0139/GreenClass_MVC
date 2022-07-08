@@ -55,22 +55,16 @@ class UserModel extends Model {
         if(isset($param["delMainImg"])) {
             $sql .= ",mainimg = null";
         }
+
+        if(isset($param["nm"], $param["cmt"])) {
+            $sql .= ",nm = {$nm}, cmt = {$cmt}";
+        }
         // 문자열 합치기 니까 띄어쓰기 조심하기!
         $sql .=" WHERE iuser = :iuser";
         $stmt = $this->pdo->prepare($sql);
         $stmt -> bindValue(":iuser", $param["iuser"]);
         $stmt->execute();
         return $stmt->rowCount();
-    }
-
-    public function updProfileImg(&$param) {
-        $sql = "UPDATE t_user
-                   SET mainimg = :img
-                 WHERE iuser = :iuser
-                 ";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt -> execute(array($param["img"], $param["iuser"]));
-        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
 

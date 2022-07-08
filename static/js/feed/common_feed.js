@@ -210,6 +210,9 @@ const feedObj = {
         divBtns.appendChild(divDm);
         divDm.className = 'pointer';
         divDm.innerHTML = `<svg aria-label="다이렉트 메세지" class="_8-yf5 " color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24"><line fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" x1="22" x2="9.218" y1="3" y2="10.083"></line><polygon fill="none" points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></polygon></svg>`;
+        divDm.addEventListener('click', e => {
+            location.href = `/dm/index?oppoiuser=${item.iuser}`;
+        });
 
         const divFav = document.createElement('div');
         divContainer.appendChild(divFav);
@@ -268,7 +271,7 @@ const feedObj = {
         divCmt.appendChild(divCmtForm);
 
         divCmtForm.innerHTML = `
-            <input type="text" class="flex-grow-1 my_input back_color p-2" placeholder="댓글을 입력하세요...">
+            <input type="text" class="flex-grow-1 my_input p-2" placeholder="댓글을 입력하세요...">
             <button type="button" class="btn btn-outline-primary">게시</button>
         `;
 

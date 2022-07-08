@@ -12,6 +12,7 @@ if(feedObj) {
     const btnDelCurrentProfilePic = document.querySelector('#btnDelCurrentProfilePic');
     const btnProfileImgModalClose = document.querySelector('#btnProfileImgModalClose');
     const btnProfileImgUp = document.querySelector('#btnProfileImgUp');
+    
 
     btnFollow.forEach( btn => {
         btn.addEventListener('click', function() {
@@ -62,26 +63,27 @@ if(feedObj) {
     });
 
     //프로필 사진 삭제 후 모달창 닫기
-    if(btnDelCurrentProfilePic) {
-        btnDelCurrentProfilePic.addEventListener('click', e=> {
-            fetch('/user/profile', {method:'DELETE'})
-            .then(res => res.json())
-            .then(res => {
-                if(res.result) {
-                    const profileImgList = document.querySelectorAll('.delprofileImg');
-                    profileImgList.forEach(item => {
-                        item.src = '/static/img/profile/defaultProfileImg_100.png';
-                    });
-                }
-                btnProfileImgModalClose.click();
+  
+        if(btnDelCurrentProfilePic){
+            btnDelCurrentProfilePic.addEventListener('click', e=> {
+                fetch('/user/profile', {method:'DELETE'})
+                .then(res => res.json())
+                .then(res => {
+                    if(res.result) {
+                        const profileImgList = document.querySelectorAll('.delprofileImg');
+                        profileImgList.forEach(item => {
+                            item.src = '/static/img/profile/defaultProfileImg_100.png';
+                        });
+                    }
+                    btnProfileImgModalClose.click();
+                });
             });
-        });
-    }
+        }
+
 
     // 프로필 사진 바꾸기 
     const profileModal = document.querySelector('#profileImgModal');
     const profileElem = profileModal.querySelector('form');
-
 
     if(btnProfileImgUp) {
         btnProfileImgUp.addEventListener('click', function(){
@@ -95,10 +97,10 @@ if(feedObj) {
                     picRead.readAsDataURL(e.target.files[0]);
 
                     picRead.onload = function(){
-
                         profileImgList.forEach((item)=> {
                             item.src = picRead.result;
                         });
+                        
                     }
                     const files = profileElem.imgs.files;
                     const picData = new FormData();
@@ -107,7 +109,8 @@ if(feedObj) {
                    fetch('/user/profile', {
                     method : 'POST',
                     body : picData
-                   }).then(res => res.json())
+                   })
+                   .then(res => res.json())
                      .then(myJson => {
                         if(myJson) {
                             btnProfileImgModalClose.click();       
@@ -120,6 +123,7 @@ if(feedObj) {
          
         });
     }
+
 
  
 })();
