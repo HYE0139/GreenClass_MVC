@@ -1,9 +1,0 @@
-#myProfileModal {text-align: center;}
-.modal-content {border-radius: 1rem;}
-
-.modal-body-menu {border-bottom: 1px solid #dee2e6;  padding: 10px 8px; font-size: 14px; line-height: 1.5; cursor: pointer;}
-.title {padding: 14px 8px; font-size:18px;}
-.fred{color:#ed4956;}
-.fblue {color:#0095f6;}
-
-.modal-body-menu:last-child{border: none;}
